@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './Auth.css';
 import { Link, useNavigate } from 'react-router-dom';
 
 function Register() {
@@ -16,7 +17,7 @@ function Register() {
     try {
       const res = await axios.post('http://localhost:5000/api/register', form);
       alert(res.data.message);
-      navigate('/'); // Go to login
+      navigate('/login'); // Go to login
     } catch (err) {
       alert(err.response?.data?.message || 'Registration failed');
     }
@@ -38,8 +39,9 @@ function Register() {
           <option value="admin">Admin</option>
         </select>
         <button type="submit" className="btn btn-primary">Register</button>
+              <p className="mt-3">Already have an account? <Link to="/login">Login here</Link></p>
+
       </form>
-      <p className="mt-3">Already have an account? <Link to="/">Login here</Link></p>
     </div>
   );
 }

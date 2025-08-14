@@ -1,5 +1,4 @@
 import { Route, Routes } from 'react-router-dom'
-import './App.css'
 import CreatePost from './components/CreatePost'
 import PostDashboard from './components/PostDashboard'
 import SummaryPage from './components/SummaryPage'
@@ -8,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Register from './components/Register'
 import Login from './components/Login'
 import MyAccount from './components/MyAccount'
+import LandingPage from './components/LandingPage';
 
 
 function App() {
@@ -15,7 +15,8 @@ function App() {
   return (
     <>
       <Routes>
-     <Route path="/" element={<Login />} />
+        <Route path="/" element={<LandingPage />} />
+     <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/postdashboard" element={<PostDashboard />} />
         <Route path="/create-trip" element={<CreatePost />} />
