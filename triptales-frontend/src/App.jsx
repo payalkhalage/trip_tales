@@ -4,10 +4,9 @@ import PostDashboard from './components/PostDashboard'
 import SummaryPage from './components/SummaryPage'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Register from './components/Register'
-import Login from './components/Login'
 import MyAccount from './components/MyAccount'
 import LandingPage from './components/LandingPage';
+import Auth from './components/Auth';
 
 
 function App() {
@@ -16,8 +15,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-     <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/auth" element={<Auth />} />
         <Route path="/postdashboard" element={<PostDashboard />} />
         <Route path="/create-trip" element={<CreatePost />} />
         <Route path="/summary/:id" element={<SummaryPage />} />

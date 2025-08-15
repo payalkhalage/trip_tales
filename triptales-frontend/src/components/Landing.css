@@ -99,3 +99,83 @@
     height: 250px;
   }
 }
+
+
+.main-section {
+  margin-top: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 60px 80px;
+  gap: 40px;
+}
+
+
+.left-text {
+  flex: 1;
+}
+
+.left-text h2 {
+  font-size: 48px;
+  font-weight: bold;
+  color: #003c58;
+  line-height: 1.2;
+}
+
+.left-text p {
+  margin-top: 20px;
+  color: #333;
+  font-size: 16px;
+  max-width: 400px;
+}
+
+.learn-btn {
+  margin-top: 25px;
+  padding: 12px 24px;
+  background-color: #ff7f50;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.learn-btn:hover {
+  background-color: #ff5722;
+}
+
+/* CAROUSEL CARD SECTION */
+.carousel-cards {
+  flex: 1.5;
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+  padding-bottom: 20px;
+  scrollbar-width: none;
+}
+
+.carousel-cards::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-card {
+  min-width: 200px;
+  height: 280px;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+}
+
+.carousel-card:hover {
+  transform: scale(1.05);
+}
+
+.carousel-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

@@ -1,145 +1,239 @@
-/* Auth.css - TripTales Theme */
+/* Auth.css */
+:root {
+  --travel-primary: #FF5722;
+  --travel-primary-light: #FF8A65;
+  --travel-primary-dark: #E64A19;
+  --travel-text-dark: #333;
+  --travel-text-light: #666;
+  --travel-white: #fff;
+  --travel-off-white: #f9f9f9;
+  --travel-shadow: 0 4px 12px rgba(255, 87, 34, 0.2);
+  --travel-transition: all 0.3s ease;
+}
 
-/* Base Styles */
-body {
+.travel-auth-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: var(--travel-off-white);
+  margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f9f9f9;
-  color: #333;
-  line-height: 1.6;
+} 
+
+.travel-auth-wrapper {
+  position: relative;
+  width: 1100px;
+  max-width: 95%;
+  height: 650px;
+  max-height: 90vh;
+  background: var(--travel-white);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: var(--travel-shadow);
+  display: flex;
 }
 
-/* Container Styles */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
+/* Forms Section */
+.travel-forms-section {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
 }
 
-/* Form Styles */
-form {
-  background-color: white;
-  padding: 2.5rem;
-  border-radius: 12px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-  margin: 2rem auto;
-  transition: all 0.3s ease;
+.travel-form-container {
+  width: 50%;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: transform 0.8s cubic-bezier(0.77,0,0.175,1), opacity 0.5s ease;
+  overflow-y: auto;
 }
 
-form:hover {
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-}
-
-/* Input Styles */
-.form-control {
-  border: 2px solid #eee;
-  border-radius: 8px;
-  padding: 0.8rem 1rem;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  margin-bottom: 1.2rem;
-}
-
-.form-control:focus {
-  border-color: #FF5722;
-  box-shadow: 0 0 0 0.25rem rgba(255, 87, 34, 0.25);
-  outline: none;
-}
-
-/* Button Styles */
-.btn {
-  padding: 0.8rem 1.8rem;
-  border-radius: 30px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  transition: all 0.3s ease;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
-  display: inline-block;
+.travel-form-container h2 {
+  color: var(--travel-primary);
+  font-size: 2rem;
+  margin-bottom: 30px;
   text-align: center;
 }
 
-.btn-success,
-.btn-primary {
-  background-color: #ff6600; /* bright orange */
-  color: white;
+/* Form Elements */
+.travel-auth-form {
+  /* overflow: hidden; */
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* This adds consistent spacing between all form elements */
+}
+
+.travel-form-group {
+  margin-bottom: 20px;
   width: 100%;
 }
 
-.btn-success:hover,
-.btn-primary:hover {
-  background-color: #e65500; /* darker orange on hover */
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(255, 102, 0, 0.4);
+.travel-auth-form input, 
+.travel-auth-form select {
+  width: 100%;
+  padding: 10px 12px; /* Slightly larger padding for better touch targets */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: var(--travel-off-white);
+  transition: var(--travel-transition);
+  box-sizing: border-box;
 }
 
-
-.btn-primary:hover {
-  background-color: #E64A19;
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(255, 87, 34, 0.4);
+.travel-auth-form input:focus, 
+.travel-auth-form select:focus {
+  border-color: var(--travel-primary);
+  box-shadow: 0 0 0 2px rgba(255, 87, 34, 0.2);
+  outline: none;
 }
 
-/* Heading Styles */
-h3 {
-  color: #FF5722;
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  font-weight: 700;
-  text-align: center;
-}
-
-/* Link Styles */
-a {
-  color: #FF5722;
-  text-decoration: none;
+.travel-auth-form button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 0px;
+  background: var(--travel-primary);
+  color: var(--travel-white);
+  border: none;
+  border-radius: 8px;
   font-weight: 600;
-  transition: all 0.2s ease;
+  cursor: pointer;
+  transition: var(--travel-transition);
 }
 
-a:hover {
-  color: #E64A19;
-  text-decoration: underline;
+.travel-auth-form button:hover {
+  background: var(--travel-primary-dark);
+  transform: translateY(-2px);
 }
 
-/* Form Layout */
-.col-md-4 {
-  max-width: 400px;
-  margin: 0 auto;
+
+.travel-register-form .travel-auth-form {
+  gap: 15px; /* Slightly smaller gap for register form to fit more fields */
 }
 
-.col-md-6 {
-  max-width: 600px;
-  margin: 0 auto;
+.travel-register-form .travel-auth-form button {
+  margin-top: 15px;
 }
 
-/* Additional Form Elements */
-select.form-control {
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 1rem center;
-  background-size: 1em;
+/* Slider Panel */
+.travel-slider-panel {
+  position: absolute;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  color: var(--travel-white);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40px;
+  z-index: 2;
+  overflow: hidden;
+  transition: transform 0.8s cubic-bezier(0.77,0,0.175,1);
 }
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-  .container {
-    padding: 1rem;
-  }
-  
-  form {
-    padding: 1.5rem;
-  }
-  
-  h3 {
-    font-size: 1.8rem;
-  }
+.travel-slide-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 400%;
+  height: 100%;
+  display: flex;
+  transition: transform 1s ease;
 }
 
-/* Animation for Form Elements */
-@keyframes fadeIn {
+.travel-slide-container img {
+  width: 25%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.7) contrast(1.1);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+}
+
+.travel-slider-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, 
+    rgba(0, 0, 0, 0.6) 0%, 
+    rgba(0, 0, 0, 0.4) 50%, 
+    rgba(0, 0, 0, 0.3) 100%);
+  z-index: -1;
+}
+
+.travel-slider-content {
+  max-width: 80%;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+  z-index: 3;
+}
+
+.travel-slider-panel h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.travel-slider-panel p {
+  margin-bottom: 30px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.travel-slider-panel button {
+  background: transparent;
+  border: 2px solid var(--travel-white);
+  color: var(--travel-white);
+  padding: 12px 30px;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--travel-transition);
+  backdrop-filter: blur(8px);
+  font-size: 1rem;
+}
+
+.travel-slider-panel button:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.05);
+}
+
+/* Animations and Transitions */
+.travel-auth-wrapper.register-mode .travel-login-form {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.travel-auth-wrapper.register-mode .travel-register-form {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.travel-auth-wrapper:not(.register-mode) .travel-register-form {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.travel-auth-wrapper.register-mode .travel-slider-panel {
+  transform: translateX(-100%);
+}
+
+/* Form Field Animations */
+.travel-auth-wrapper.reveal-complete .travel-auth-form input,
+.travel-auth-wrapper.reveal-complete .travel-auth-form select,
+.travel-auth-wrapper.reveal-complete .travel-auth-form button {
+  animation: travelFadeInUp 0.6s forwards;
+}
+
+@keyframes travelFadeInUp {
   from {
     opacity: 0;
     transform: translateY(20px);
@@ -150,135 +244,48 @@ select.form-control {
   }
 }
 
-form {
-  animation: fadeIn 0.6s ease-out forwards;
+/* Responsive Design */
+@media (max-width: 768px) {
+  .travel-auth-wrapper {
+    flex-direction: column;
+    height: auto;
+  }
+  
+  .travel-form-container, .travel-slider-panel {
+    position: relative;
+    width: 100%;
+    height: auto;
+  }
+  
+  .travel-slider-panel {
+    padding: 30px 20px;
+    order: -1;
+    height: 250px;
+  }
+  
+  .travel-form-container {
+    padding: 30px 20px;
+  }
+  
+  .travel-auth-wrapper.register-mode .travel-login-form,
+  .travel-auth-wrapper.register-mode .travel-register-form,
+  .travel-auth-wrapper:not(.register-mode) .travel-register-form {
+    transform: none;
+  }
+  
+  .travel-slide-container img {
+    height: 250px;
+  }
+
+  .travel-auth-wrapper.register-mode .travel-slider-panel {
+    transform: none;
+  }
 }
 
-/* Form Group Styling */
-.form-group {
-  margin-bottom: 1.5rem;
-}
-
-/* Label Styling */
-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-  color: #555;
-}
-
-/* Date Input Customization */
-input[type="date"] {
-  position: relative;
-}
-
-input[type="date"]::-webkit-calendar-picker-indicator {
-  background: transparent;
-  bottom: 0;
-  color: transparent;
-  cursor: pointer;
-  height: auto;
-  left: 0;
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: auto;
-}
-
-/* Error Message Styling */
-.error-message {
-  color: #d32f2f;
-  font-size: 0.9rem;
-  margin-top: 0.25rem;
-}
-
-/* Success Message Styling */
-.success-message {
-  color: #388e3c;
-  font-size: 0.9rem;
-  margin-top: 0.25rem;
-}
-
-/* Divider Styling */
-.divider {
-  display: flex;
-  align-items: center;
-  margin: 1.5rem 0;
-  color: #777;
-  font-size: 0.9rem;
-}
-
-.divider::before,
-.divider::after {
-  content: "";
-  flex: 1;
-  border-bottom: 1px solid #ddd;
-}
-
-.divider::before {
-  margin-right: 1rem;
-}
-
-.divider::after {
-  margin-left: 1rem;
-}
-
-/* Social Login Buttons */
-.social-login {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-top: 1.5rem;
-}
-
-.social-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.8rem;
-  border-radius: 6px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.social-btn.google {
-  background-color: #fff;
-  color: #757575;
-  border: 1px solid #ddd;
-}
-
-.social-btn.google:hover {
-  background-color: #f5f5f5;
-}
-
-.social-btn.facebook {
-  background-color: #3b5998;
-  color: white;
-}
-
-.social-btn.facebook:hover {
-  background-color: #344e86;
-}
-
-/* Password Toggle */
-.password-toggle {
-  position: relative;
-}
-
-.password-toggle input {
-  padding-right: 2.5rem;
-}
-
-.password-toggle-icon {
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-  color: #777;
-}
-
-.password-toggle-icon:hover {
-  color: #333;
+@media (max-height: 700px) {
+  .travel-form-container {
+    padding: 20px;
+    overflow-y: auto;
+    max-height: 80vh;
+  }
 }
