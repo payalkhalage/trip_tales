@@ -117,7 +117,7 @@ export const getPosts = async (req, res) => {
 
     const posts = rows.map(post => ({
       ...post,
-      images: post.images ? post.images.split(',') : [],
+      images: post.images ? post.images.split(',').filter(img => img.trim() !== '') : [],
     }));
 
     res.json(posts);
@@ -236,3 +236,5 @@ export const deletePost = async (req, res) => {
     res.status(500).json({ message: 'Failed to delete post' });
   }
 };
+
+

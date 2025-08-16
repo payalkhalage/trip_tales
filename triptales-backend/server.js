@@ -10,10 +10,12 @@ import notificationRoutes from './routes/notificationRoutes.js';
 import likeRoutes from './routes/likeRoutes.js';
 import bookmarksRoutes from './routes/bookmarks.js';
 import helpfulsRoutes from './routes/helpfuls.js';
+import experienceRoutes from './routes/experienceRoutes.js';
+
 const app = express();
 
 app.use(cors({
-  origin: 'http://localhost:5173', // Allow frontend dev server
+  origin: 'http://localhost:5173',
   credentials: true
 }));
 
@@ -27,12 +29,14 @@ app.use('/uploads', express.static(path.join('public', 'uploads')));
 app.use('/api/posts', postRoutes);
 app.use('/api', locationRoutes);
 app.use('/api/summary', summaryRoutes);
-app.use('/api',authRoutes);
+app.use('/api', authRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/likes', likeRoutes);
 app.use('/api/bookmarks', bookmarksRoutes);
 app.use('/api/helpfuls', helpfulsRoutes);
+app.use('/api/experiences', experienceRoutes);
+
 
 app.listen(5000, () => {
   console.log('Backend running on http://localhost:5000');

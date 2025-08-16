@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { FaArrowLeft } from 'react-icons/fa';
+import { FaArrowLeft, FaIdCard , FaEnvelope, FaStar, FaEdit, FaPlus } from 'react-icons/fa';
 import { toast } from "react-toastify";
+import { Modal, Button } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import './MyAccount.css';
-
 
 function MyAccount() {
   const [user, setUser] = useState(null);
@@ -12,14 +12,18 @@ function MyAccount() {
   const [likesMap, setLikesMap] = useState({});
   const [helpfulsMap, setHelpfulsMap] = useState({});
   const [commentsMap, setCommentsMap] = useState({});
-  const [bookmarkedPostIds, setBookmarkedPostIds] = useState(new Set());
+  const [bookmarkedPosts, setBookmarkedPosts] = useState([]);
   const [showingBookmarks, setShowingBookmarks] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
   const [editingPostId, setEditingPostId] = useState(null);
   const [editedPost, setEditedPost] = useState({ title: '', experience: '', budget: '', location: '' });
+  const [showExperienceModal, setShowExperienceModal] = useState(false);
+  const [experienceText, setExperienceText] = useState('');
+  const [userExperiences, setUserExperiences] = useState([]); // Add this with your other state declarations
 
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
+
   useEffect(() => {
     if (!token) return;
 
@@ -29,6 +33,7 @@ function MyAccount() {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(res.data);
+        setExperienceText(res.data.experience || '');
       } catch {
         toast.error("Failed to fetch user");
       }
@@ -93,11 +98,10 @@ function MyAccount() {
       }
     };
 
-    const fetchBookmarks = async () => {
+   const fetchBookmarks = async () => {
       try {
         const res = await axios.get(`http://localhost:5000/api/bookmarks?userId=${user.id}`);
-        const bookmarkedIds = new Set(res.data.map((bm) => bm.post_id));
-        setBookmarkedPostIds(bookmarkedIds);
+        setBookmarkedPosts(res.data);
       } catch {
         toast.error("Failed to fetch bookmarks");
       }
@@ -109,14 +113,30 @@ function MyAccount() {
     fetchBookmarks();
   }, [user, userPosts]);
 
+const handleSaveExperience = async () => {
+  try {
+    const response = await axios.post(
+      "http://localhost:5000/api/experiences",
+      { experience: experienceText },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    
+    setUser({ ...user, experience: experienceText });
+    setShowExperienceModal(false);
+    toast.success("Experience saved successfully!");
+    fetchUserExperiences(); // Refresh the experiences list
+  } catch (error) {
+    toast.error("Failed to save experience");
+    console.error(error);
+  }
+};
+
   const totalComments = Object.values(commentsMap).reduce((acc, val) => acc + val, 0);
   const totalLikes = Object.values(likesMap).reduce((acc, val) => acc + val, 0);
   const totalHelpfuls = Object.values(helpfulsMap).reduce((acc, val) => acc + val, 0);
   const averageEngagement = userPosts.length > 0 ? (totalLikes + totalHelpfuls) / userPosts.length : 0;
 
-  const displayedPosts = showingBookmarks
-    ? userPosts.filter((post) => bookmarkedPostIds.has(post.id))
-    : userPosts;
+ const displayedPosts = showingBookmarks ? bookmarkedPosts : userPosts;
 
   const startEditing = (post) => {
     setEditingPostId(post.id);
@@ -172,25 +192,142 @@ function MyAccount() {
     }
   };
 
+const fetchUserExperiences = async () => {
+  try {
+    const res = await axios.get("http://localhost:5000/api/experiences", {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    setUserExperiences(res.data);
+  } catch (error) {
+    toast.error("Failed to fetch experiences");
+    console.error(error);
+  }
+};
+
+// Call it when needed, for example:
+useEffect(() => {
+  if (user) {
+    fetchUserExperiences();
+  }
+}, [user]);
+
   return (
     <div className="container py-4">
       <h2>My Account</h2>
 
       <button
-  className="btn btn-outline-secondary mb-3 d-flex align-items-center gap-2"
-  onClick={() => navigate('/postdashboard')}
->
-  <FaArrowLeft />
-  Back to Dashboard
-</button>
+        className="btn btn-outline-secondary mb-3 d-flex align-items-center gap-2"
+        onClick={() => navigate('/postdashboard')}
+      >
+        <FaArrowLeft />
+        Back to Dashboard
+      </button>
 
       {user && (
-        <div className="card p-3 shadow-sm mb-4">
-          <p><strong>Name:</strong> {user.name}</p>
-          <p><strong>Email:</strong> {user.email}</p>
+        <div className="tt-user-profile-card tt-card-theme">
+          <div className="tt-user-info-grid">
+            <div className="tt-user-basic-info">
+
+<div className="tt-info-item">
+  <span className="tt-icon-circle tt-primary-icon">
+    <FaIdCard className="tt-icon" />
+  </span>
+  <div className="tt-info-content">
+    <span className="tt-info-label">Name</span>
+    <p className="tt-info-value">{user.name}</p>
+  </div>
+</div>
+              
+              <div className="tt-info-item">
+                <span className="tt-icon-circle tt-accent-icon">
+                  <FaEnvelope className="tt-icon" />
+                </span>
+                <div className="tt-info-content">
+                  <span className="tt-info-label">Email</span>
+                  <p className="tt-info-value">{user.email}</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="tt-user-experience">
+              <div className="tt-experience-container">
+                <h6 className="tt-experience-title">
+                  <FaStar className="tt-star-icon" />
+                  <span>My Travel App Journey</span>
+                </h6>
+                
+                {user.experience ? (
+                  <div className="tt-experience-content">
+                    <p className="tt-experience-text">"{user.experience}"</p>
+                    <button 
+                      className="tt-edit-btn tt-btn-theme"
+                      onClick={() => {
+                        setExperienceText(user.experience);
+                        setShowExperienceModal(true);
+                      }}
+                    >
+                      <FaEdit className="tt-btn-icon" />
+                      <span>Edit Feedback</span>
+                    </button>
+                  </div>
+                ) : (
+                  <button 
+                    className="tt-add-btn tt-btn-theme"
+                    onClick={() => setShowExperienceModal(true)}
+                  >
+                    <FaPlus className="tt-btn-icon" />
+                    <span>Share Your Experience</span>
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
+      <Modal 
+        show={showExperienceModal} 
+        onHide={() => setShowExperienceModal(false)} 
+        centered
+        className="tt-experience-modal"
+      >
+        <Modal.Header closeButton className="tt-modal-header">
+          <Modal.Title className="tt-modal-title">
+            <FaStar className="tt-modal-title-icon" />
+            <span>{user?.experience ? 'Edit' : 'Share'} Your Travel Story</span>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="tt-modal-body">
+          <p className="tt-modal-prompt">How has your journey with our app been?</p>
+          <textarea
+            className="tt-feedback-textarea"
+            rows={5}
+            value={experienceText}
+            onChange={(e) => setExperienceText(e.target.value)}
+            placeholder="Tell us what you loved or how we can improve your travel planning experience..."
+          />
+          <div className="tt-feedback-note">
+            Your insights help us create better adventures for travelers worldwide.
+          </div>
+        </Modal.Body>
+        <Modal.Footer className="tt-modal-footer">
+          <button 
+            className="tt-modal-cancel-btn"
+            onClick={() => setShowExperienceModal(false)}
+          >
+            Cancel
+          </button>
+          <button 
+            className="tt-modal-submit-btn"
+            onClick={handleSaveExperience}
+            disabled={!experienceText.trim()}
+          >
+            Share Your Story
+          </button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Rest of your existing code for posts display */}
       <div className="d-flex gap-3 mb-4">
         <div className="p-3 border rounded shadow-sm text-center flex-fill" onClick={() => setShowingBookmarks(false)}>
           <h4>{userPosts.length}</h4><p>Total Posts</p>
@@ -202,7 +339,7 @@ function MyAccount() {
           <h4>{totalComments}</h4><p>Total Comments</p>
         </div>
         <div className="p-3 border rounded shadow-sm text-center flex-fill bg-warning" onClick={() => setShowingBookmarks(true)}>
-          <h4>{bookmarkedPostIds.size}</h4><p>Bookmarked Posts</p>
+          <h4>{bookmarkedPosts.length}</h4><p>Bookmarked Posts</p>
         </div>
       </div>
 
