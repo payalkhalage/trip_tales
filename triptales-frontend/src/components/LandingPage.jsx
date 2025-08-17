@@ -480,20 +480,20 @@ const LandingPage = () => {
         }
 
         .logo-container {
-  display: flex;
-  align-items: center;
-  padding: 10px 0; /* Adjust padding as needed */
-}
-      .logo-image {
-  height: 60px; /* Increased from 40px to 60px */
-  width: auto;
-  transition: all 0.3s ease;
-}
+          display: flex;
+          align-items: center;
+          padding: 10px 0; /* Adjust padding as needed */
+        }
+        .logo-image {
+          height: 60px; /* Increased from 40px to 60px */
+          width: auto;
+          transition: all 0.3s ease;
+        }
 
-// .navbar.solid .logo-image {
-//   filter: brightness(0) saturate(100%) invert(42%) sepia(98%) saturate(1352%) hue-rotate(350deg) brightness(99%) contrast(88%);
-//   /* This filter converts the logo to your primary orange color */
-// }
+        // .navbar.solid .logo-image {
+        //   filter: brightness(0) saturate(100%) invert(42%) sepia(98%) saturate(1352%) hue-rotate(350deg) brightness(99%) contrast(88%);
+        //   /* This filter converts the logo to your primary orange color */
+        // }
 
         .logo-highlight {
           color: var(--white);

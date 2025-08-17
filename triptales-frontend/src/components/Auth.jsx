@@ -97,7 +97,7 @@ function Auth() {
               <input name="country" placeholder="Country" onChange={handleChange} required />
               <select name="role" onChange={handleChange}>
                 <option value="user">User</option>
-                <option value="admin">Admin</option>
+                {/* <option value="admin">Admin</option> */}
               </select>
               <button type="submit">Register</button>
             </form>

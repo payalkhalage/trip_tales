@@ -116,7 +116,7 @@ export const getPosts = async (req, res) => {
 
     const posts = rows.map(post => ({
       ...post,
-      images: post.images ? post.images.split(',') : [],
+      images: post.images ? post.images.split(',').filter(img => img.trim() !== '') : [],
     }));
 
     res.json(posts);
