@@ -26,11 +26,37 @@ router.post('/register', async (req, res) => {
   }
 });
 
+
+
 // Login
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
   try {
+    // ✅ Admin hardcoded login (bypass DB)
+    if (username === "Admin" && password === "Admin@#11") {
+      const token = jwt.sign(
+        { id: 0, username: "Admin", role: "admin" },
+        process.env.JWT_SECRET || '73d67213c53f18b47c38f7bf3c7a3221c1ffac0fd3a52659f43d49e75f162dc3b28b9966b1fd573f35d1b575450d954cdff5276078bc8559b902f95ef7771576',
+        { expiresIn: '24h' }
+
+      );
+
+      return res.json({
+        success: true,
+        message: "Welcome Admin!",
+        token,
+        user: {
+          id: 0,
+          name: "System Admin",
+          username: "Admin",
+          role: "admin",
+        },
+        redirectTo: "/AdminDashboard",
+      });
+    }
+
+    // ✅ Normal user login (DB check)
     const [results] = await db.query('SELECT * FROM users WHERE username = ?', [username]);
 
     if (results.length === 0) {
@@ -43,30 +69,17 @@ router.post('/login', async (req, res) => {
     if (!passwordMatch) {
       return res.status(401).json({ success: false, message: 'Invalid username or password' });
     }
+
     const token = jwt.sign(
       { id: user.id, username: user.username, role: user.role },
       process.env.JWT_SECRET || '73d67213c53f18b47c38f7bf3c7a3221c1ffac0fd3a52659f43d49e75f162dc3b28b9966b1fd573f35d1b575450d954cdff5276078bc8559b902f95ef7771576',
       { expiresIn: '1h' }
     );
 
-    // Respond with user details (no password)
-    // res.json({
-    //   success: true,
-    //   message: 'Login successful',
-    //   user: {
-    //     id: user.id,
-    //     name: user.name,
-    //     username: user.username,
-    //     role: user.role,
-    //   },
-    //   redirectTo: '/postdashboard'
-    // });
-
-
     res.json({
       success: true,
       message: 'Login successful',
-      token, // <== this is what frontend needs
+      token,
       user: {
         id: user.id,
         name: user.name,
@@ -80,6 +93,9 @@ router.post('/login', async (req, res) => {
     res.status(500).json({ message: 'Server error during login' });
   }
 });
+
+
+
 
 // GET Logged-in User Profile
 router.get('/me', authenticateToken, async (req, res) => {

@@ -1,3 +1,4 @@
+
 import db from '../config/db.js';
 import fs from 'fs';
 import path from 'path';
@@ -24,7 +25,6 @@ export const createPost = async (req, res) => {
       return res.status(400).json({ message: 'Missing required fields' });
     }
 
-    // ✅ Parse latitude/longitude or set null
     latitude = latitude ? parseFloat(latitude) : null;
     longitude = longitude ? parseFloat(longitude) : null;
     duration = duration ? parseInt(duration) : null;
@@ -72,7 +72,6 @@ export const createPost = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
-
 
 export const getAllPosts = async (req, res) => {
   try {
@@ -127,7 +126,6 @@ export const getPosts = async (req, res) => {
   }
 };
 
-
 export const getUserPosts = async (req, res) => {
   const userId = req.user?.id;
   if (!userId) {
@@ -156,7 +154,6 @@ export const getUserPosts = async (req, res) => {
   }
 };
 
-
 export const updatePost = async (req, res) => {
   const userId = req.user?.id;
   const postId = req.params.id;
@@ -174,7 +171,6 @@ export const updatePost = async (req, res) => {
   if (!userId) return res.status(401).json({ message: 'Unauthorized' });
 
   try {
-    // Check ownership
     const [[post]] = await db.query('SELECT user_id FROM posts WHERE id = ?', [postId]);
 
     if (!post) return res.status(404).json({ message: 'Post not found' });
@@ -210,29 +206,50 @@ export const updatePost = async (req, res) => {
   }
 };
 
-
 export const deletePost = async (req, res) => {
-  const userId = req.user?.id;
   const postId = req.params.id;
+  const userId = req.user?.id;
+  const role = req.user?.role;
 
   if (!userId) return res.status(401).json({ message: 'Unauthorized' });
 
+  const conn = await db.getConnection();
   try {
-    // Check ownership
-    const [[post]] = await db.query('SELECT user_id FROM posts WHERE id = ?', [postId]);
+    const [[post]] = await conn.query('SELECT user_id FROM posts WHERE id = ?', [postId]);
+    if (!post) {
+      conn.release();
+      return res.status(404).json({ message: 'Post not found' });
+    }
 
-    if (!post) return res.status(404).json({ message: 'Post not found' });
-    if (post.user_id !== userId) return res.status(403).json({ message: 'Forbidden' });
+    if (role !== 'admin' && post.user_id !== userId) {
+      conn.release();
+      return res.status(403).json({ message: 'Forbidden' });
+    }
 
-    // Delete related images (optional)
-    await db.query('DELETE FROM post_images WHERE post_id = ?', [postId]);
+    await conn.beginTransaction();
 
-    // Delete the post
-    await db.query('DELETE FROM posts WHERE id = ?', [postId]);
+    // ✅ Delete all dependent records first
+    await conn.query('DELETE FROM post_images WHERE post_id = ?', [postId]);
+    await conn.query('DELETE FROM comments WHERE post_id = ?', [postId]);
+    await conn.query('DELETE FROM likes WHERE post_id = ?', [postId]);
+    await conn.query('DELETE FROM bookmarks WHERE post_id = ?', [postId]);
+    await conn.query('DELETE FROM helpfuls WHERE post_id = ?', [postId]);
+    await conn.query('DELETE FROM experience_summary WHERE post_id = ?', [postId]);
+    await conn.query('DELETE FROM notifications WHERE post_id = ?', [postId]);
 
-    res.json({ message: 'Post deleted successfully' });
+    // ✅ Delete the post itself
+    await conn.query('DELETE FROM posts WHERE id = ?', [postId]);
+
+    await conn.commit();
+    conn.release();
+
+    return res.json({ success: true, message: 'Post deleted successfully' });
   } catch (err) {
-    console.error('Error deleting post:', err);
-    res.status(500).json({ message: 'Failed to delete post' });
+    await conn.rollback();
+    conn.release();
+    console.error('Delete post error:', err);
+    return res.status(500).json({ message: 'Failed to delete post' });
   }
 };
+
+
