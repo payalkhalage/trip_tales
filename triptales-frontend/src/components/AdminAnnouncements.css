@@ -1,0 +1,140 @@
+/* Container */
+.admin-announcements-container {
+  max-width: 700px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Headings */
+.admin-announcements-container h2,
+.admin-announcements-container h3 {
+  margin-bottom: 15px;
+  color: #2c3e50;
+}
+
+.admin-announcements-container h2 {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.admin-announcements-container h3 {
+  font-size: 20px;
+  font-weight: 500;
+  margin-top: 30px;
+}
+
+/* Inputs and textarea */
+.admin-announcements-container input,
+.admin-announcements-container textarea {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admin-announcements-container input:focus,
+.admin-announcements-container textarea:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+  outline: none;
+}
+
+/* Buttons */
+.admin-announcements-container button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: #3498db;
+  color: #fff;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  margin-top: 5px;
+}
+
+.admin-announcements-container button:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+}
+
+.admin-announcements-container button:active {
+  transform: translateY(0);
+}
+
+/* Announcements list */
+.admin-announcements-container ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.admin-announcements-container li {
+  background-color: #f9f9f9;
+  padding: 12px 15px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background-color 0.2s ease;
+}
+
+.admin-announcements-container li:hover {
+  background-color: #eef6fb;
+}
+
+.admin-announcements-container li strong {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+/* Date / timestamp */
+.admin-announcements-container li small {
+  color: #7f8c8d;
+  margin-left: 8px;
+  font-size: 12px;
+}
+
+/* Delete button inside list */
+.admin-announcements-container li button {
+  background-color: #e74c3c;
+  font-size: 12px;
+  padding: 6px 10px;
+}
+
+.admin-announcements-container li button:hover {
+  background-color: #c0392b;
+}
+
+/* New badge for recent announcements */
+.new-badge {
+  background-color: #f39c12; /* orange/gold */
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 12px;
+  margin-left: 8px;
+  vertical-align: middle;
+  animation: pulseBadge 1.5s infinite;
+}
+
+/* Pulse animation for new badge */
+@keyframes pulseBadge {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* Optional: Highlight the background of new announcements */
+.new-announcement {
+  border-left: 4px solid #f39c12;
+  background-color: #fff8e6;
+}

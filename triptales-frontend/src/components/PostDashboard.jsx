@@ -297,43 +297,55 @@ function PostDashboard() {
   };
 
 
-
-  //  useEffect(() => {
-  //   const fetchAnnouncements = async () => {
-  //     try {
-  //       const res = await axios.get("http://localhost:5000/api/announcements", {
-  //         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-  //       });
-  //       // Filter out already seen announcements
-  //       const seenIds = JSON.parse(localStorage.getItem("seenAnnouncements") || "[]");
-  //       const unseen = res.data.filter((a) => !seenIds.includes(a.id));
-  //       setAnnouncements(unseen);
-  //     } catch (err) {
-  //       console.error("Failed to fetch announcements", err);
-  //     }
-  //   };
-  //   fetchAnnouncements();
-  // }, []);
-
-
   useEffect(() => {
-  const fetchAnnouncements = async () => {
-    if (!currentUser) return;
-    const res = await axios.get("http://localhost:5000/api/announcements", {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-    });
-    setAnnouncements(res.data);
-  };
-  fetchAnnouncements();
-}, [currentUser]);
+    const fetchAnnouncements = async () => {
+      if (!currentUser) return;
 
-const handleDismissAnnouncement = async (id) => {
-  await axios.post("http://localhost:5000/api/announcements/seen", 
-    { announcementId: id }, 
-    { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
-  );
-  setAnnouncements((prev) => prev.filter(a => a.id !== id));
-};
+      try {
+        const res = await axios.get("http://localhost:5000/api/announcements", {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        });
+
+        // Filter out seen announcements for this user
+        const key = `seenAnnouncements_${currentUser.id}`;
+        const seenIds = JSON.parse(localStorage.getItem(key) || "[]");
+        const unseen = res.data.filter(a => !seenIds.includes(a.id));
+
+        setAnnouncements(unseen);
+      } catch (err) {
+        console.error("Failed to fetch announcements", err);
+      }
+    };
+
+    fetchAnnouncements();
+  }, [currentUser]);
+
+
+  const handleDismissAnnouncement = async (id) => {
+    try {
+      // Persist per user
+      const userId = currentUser.id;
+      const key = `seenAnnouncements_${userId}`;
+
+      // Save dismissed announcement for this user only
+      const seenIds = JSON.parse(localStorage.getItem(key) || "[]");
+      localStorage.setItem(key, JSON.stringify([...seenIds, id]));
+
+      // Remove from UI
+      setAnnouncements(prev => prev.filter(a => a.id !== id));
+
+      // Optional: notify server (still include userId!)
+      await axios.post(
+        "http://localhost:5000/api/announcements/seen",
+        { announcementId: id, userId },
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
+    } catch (err) {
+      console.error("Failed to dismiss announcement", err);
+    }
+  };
+
+
 
   // const handleMarkAsSeen = () => {
   //   const seenIds = JSON.parse(localStorage.getItem("seenAnnouncements") || "[]");
@@ -382,22 +394,58 @@ const handleDismissAnnouncement = async (id) => {
           </div> */}
 
 
-          <div className="announcement-bell">
-  <Bell size={24} />
+          {/* <div className="announcement-bell">
+            <Bell size={24} />
+            {announcements.length > 0 && (
+              <span className="badge">{announcements.length}</span>
+            )}
+          </div>
+
+         
+          <div className="announcement-list">
+            {announcements.map(a => (
+              <div key={a.id} className="announcement-item">
+                <p>{a.message}</p>
+                <button onClick={() => handleDismissAnnouncement(a.id)}>Dismiss</button>
+              </div>
+            ))}
+          </div> */}
+
+
+         <div className="announcement-bell-wrapper">
+  <button
+    className={`announcement-bell ${announcements.length > 0 ? "new-alert" : ""}`}
+    onClick={() => setShowAnnouncements((prev) => !prev)}
+  >
+    <Bell size={24} className="bell-icon" />
+    {announcements.length > 0 && (
+      <span className="badge">{announcements.length}</span>
+    )}
+  </button>
+
+  {/* Dropdown */}
   {announcements.length > 0 && (
-    <span className="badge">{announcements.length}</span>
+    <div className={`announcement-dropdown ${showAnnouncements ? "active" : ""}`}>
+      <div className="dropdown-arrow"></div>
+      <div className="dropdown-header">Announcements</div>
+      <ul className="dropdown-list">
+        {announcements.map((a) => (
+          <li key={a.id} className="announcement-item">
+            <p>{a.message}</p>
+            <small>{new Date(a.date).toLocaleString()}</small>
+            <button
+              className="dismiss-btn"
+              onClick={() => handleDismissAnnouncement(a.id)}
+            >
+              Mark as read
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
   )}
 </div>
 
-{/* Announcement popup/list */}
-<div className="announcement-list">
-  {announcements.map(a => (
-    <div key={a.id} className="announcement-item">
-      <p>{a.message}</p>
-      <button onClick={() => handleDismissAnnouncement(a.id)}>Dismiss</button>
-    </div>
-  ))}
-</div>
 
           <button
             className="tt-create-trip-btn"
@@ -613,8 +661,8 @@ const handleDismissAnnouncement = async (id) => {
 
                     <button
                       className={`btn btn-sm ${helpfuls[post.id]?.marked
-                          ? "btn-success"
-                          : "btn-outline-success"
+                        ? "btn-success"
+                        : "btn-outline-success"
                         }`}
                       onClick={() => handleToggleHelpful(post.id)}
                     >

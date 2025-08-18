@@ -1,108 +1,114 @@
-/* Clickable blue link style for title */
-.link-like {
-  cursor: pointer;
-  color: #0d6efd;
-  text-decoration: underline;
-}
-
+/* AdminDashboard.css */
 /* Overlay */
 .popup-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0,0,0,0.6);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1050;
+  padding: 10px;
 }
 
-/* Card */
+/* Fixed square card */
+/* AdminDashboard.css */
+/* WIDER popup card */
 .popup-card {
   background: #fff;
-  width: min(90vw, 760px);
-  max-height: 80vh;
+  width: min(98vw, 1000px);  /* wider card */
+  height: 90vh;
   border-radius: 14px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.35);
   position: relative;
   display: flex;
   flex-direction: column;
-  overflow: hidden;            /* keeps inner content clipped */
-}
-
-/* Close button */
-.popup-close {
-  position: absolute;
-  top: 10px;
-  right: 14px;
-  font-size: 28px;
-  line-height: 1;
-  background: transparent;
-  border: none;
-  color: #666;
-  cursor: pointer;
-}
-.popup-close:hover { color: #e11d48; }
-
-/* Title */
-.popup-title {
-  margin: 16px 20px 8px;
-  font-size: 22px;
-  font-weight: 700;
-}
-
-/* Meta chips (location, budget, etc.) */
-.popup-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 0 20px 12px;
-}
-.popup-meta span {
-  background: #f3f4f6;
-  border: 1px solid #e5e7eb;
-  color: #374151;
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-}
-
-/* Hero image */
-.popup-hero {
-  width: 100%;
-  height: 260px;
-  background: #fafafa;
   overflow: hidden;
+  padding: 16px;
 }
-.popup-hero img {
+
+/* Thumbnails below slider */
+.popup-thumbnails {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+.popup-thumb {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+  cursor: pointer;
+  opacity: 0.7;
+  border: 2px solid transparent;
+  transition: 0.3s;
+}
+.popup-thumb:hover,
+.active-thumb {
+  opacity: 1;
+  border-color: #0d6efd;
+}
+
+/* Slider remains same */
+.popup-gallery {
+  position: relative;
+  width: 100%;
+  height: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.popup-gallery-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;           /* nice crop like PostDashboard */
-  display: block;
-}
-
-/* Scrollable content body */
-.popup-body {
-  padding: 16px 20px 20px;
-  overflow-y: auto;            /* keeps content inside */
-  flex: 1;                     /* take remaining height */
-}
-
-/* Experience text: preserve line breaks & wrap long words */
-.popup-experience {
-  white-space: pre-wrap;       /* like PostDashboard text */
-  word-break: break-word;      /* avoid overflow on long tokens */
-  line-height: 1.55;
-  color: #1f2937;
-  margin-bottom: 14px;
-  font-size: 15px;
-}
-
-/* Additional images below text */
-.popup-extra-img {
-  width: 100%;
-  max-height: 240px;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 10px;
-  margin-top: 10px;
-  display: block;
+  transition: transform 0.3s ease;
+}
+
+/* Slider buttons */
+.popup-gallery-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 36px;
+  color: rgba(255,255,255,0.85);
+  background: rgba(0,0,0,0.35);
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.popup-gallery-btn.left { left: 10px; }
+.popup-gallery-btn.right { right: 10px; }
+.popup-gallery-btn:hover { background: rgba(0,0,0,0.6); }
+
+/* Text / Experience section - scrollable if content too long */
+.popup-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 5px;
+  font-size: 14px;
+  color: #1f2937;
+}
+.popup-experience {
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.5;
+}
+
+/* Clickable title */
+.link-like {
+  cursor: pointer;
+  color: #0d6efd;
+  text-decoration: underline;
 }

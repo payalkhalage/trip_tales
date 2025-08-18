@@ -9,6 +9,7 @@ import LandingPage from './components/LandingPage';
 import Auth from './components/Auth';
 import AdminDashboard from './components/AdminDashboard';
 import AdminAnnouncements from './components/AdminAnnouncements';
+import ViewFeedbacks from './components/ViewFeedbacks';
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
          <Route path="/edit-post/:id" element={<CreatePost />} />
           <Route path="/admindashboard" element={<AdminDashboard />} />
           <Route path="/admin/announcements" element={<AdminAnnouncements />} />
+          <Route path="/admin/view-feedbacks" element={<ViewFeedbacks />} />
     </Routes>
     <ToastContainer position="top-right" autoClose={3000} />
     </>
