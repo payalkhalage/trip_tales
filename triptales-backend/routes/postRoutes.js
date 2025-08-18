@@ -36,7 +36,7 @@
 
 import express from 'express';
 import multer from 'multer';
-import { authenticateToken } from '../Middleware/auth.js';
+import { authenticateToken } from "../Middleware/auth.js";
 import {
   createPost,
   getPosts,

@@ -111,3 +111,11 @@ mysql> CREATE TABLE IF NOT EXISTS user_experiences (
     -> ADD CONSTRAINT unique_user_experience UNIQUE (user_id);
 Query OK, 0 rows affected (0.09 sec)
 Records: 0  Duplicates: 0  Warnings: 0
+
+
+CREATE TABLE announcements (
+  id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  description TEXT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

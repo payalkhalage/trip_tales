@@ -36,6 +36,7 @@ function Auth() {
         username: form.username,
         password: form.password
       });
+
       const { token, user, message, redirectTo } = res.data;
       if (token && user) {
         localStorage.setItem('token', token);

@@ -10,6 +10,7 @@ import {
   FiChevronRight,
 } from "react-icons/fi";
 
+
 // Image data
 const carouselImages = [
   {
@@ -54,40 +55,40 @@ const features = [
 ];
 
 // Testimonials data
-const testimonials = [
-  {
-    id: 1,
-    name: "Sarah Johnson",
-    role: "Travel Blogger",
-    content:
-      "TripTales has completely transformed how I document my journeys. The photo stories feature is my favorite - it helps me create beautiful narratives of my travels.",
-    avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-  },
-  {
-    id: 2,
-    name: "Michael Chen",
-    role: "Adventure Photographer",
-    content:
-      "As someone who travels constantly, I love how TripTales helps me organize all my experiences in one place. The interactive maps are incredibly useful!",
-    avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-  },
-  {
-    id: 3,
-    name: "Emma Rodriguez",
-    role: "Digital Nomad",
-    content:
-      "The travel community on TripTales is amazing. I've connected with so many like-minded explorers and discovered hidden gems I would have never found otherwise.",
-    avatar: "https://randomuser.me/api/portraits/women/63.jpg",
-  },
-  {
-    id: 4,
-    name: "David Kim",
-    role: "Backpacker",
-    content:
-      "Simple, intuitive, and packed with features. TripTales makes travel journaling fun and effortless. Highly recommend to any traveler!",
-    avatar: "https://randomuser.me/api/portraits/men/71.jpg",
-  },
-];
+// const testimonials = [
+//   {
+//     id: 1,
+//     name: "Sarah Johnson",
+//     role: "Travel Blogger",
+//     content:
+//       "TripTales has completely transformed how I document my journeys. The photo stories feature is my favorite - it helps me create beautiful narratives of my travels.",
+//     avatar: "https://randomuser.me/api/portraits/women/44.jpg",
+//   },
+//   {
+//     id: 2,
+//     name: "Michael Chen",
+//     role: "Adventure Photographer",
+//     content:
+//       "As someone who travels constantly, I love how TripTales helps me organize all my experiences in one place. The interactive maps are incredibly useful!",
+//     avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+//   },
+//   {
+//     id: 3,
+//     name: "Emma Rodriguez",
+//     role: "Digital Nomad",
+//     content:
+//       "The travel community on TripTales is amazing. I've connected with so many like-minded explorers and discovered hidden gems I would have never found otherwise.",
+//     avatar: "https://randomuser.me/api/portraits/women/63.jpg",
+//   },
+//   {
+//     id: 4,
+//     name: "David Kim",
+//     role: "Backpacker",
+//     content:
+//       "Simple, intuitive, and packed with features. TripTales makes travel journaling fun and effortless. Highly recommend to any traveler!",
+//     avatar: "https://randomuser.me/api/portraits/men/71.jpg",
+//   },
+// ];
 
 // Feature Card Component
 const FeatureCard = ({ icon, title, description, index }) => {
@@ -108,102 +109,110 @@ const FeatureCard = ({ icon, title, description, index }) => {
 };
 
 // Testimonials Carousel Component
-const TestimonialsCarousel = () => {
-  const [current, setCurrent] = useState(0);
-  const [direction, setDirection] = useState(1);
+// const TestimonialsCarousel = () => {
+//   const [current, setCurrent] = useState(0);
+//   const [direction, setDirection] = useState(1);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setDirection(1);
-      setCurrent((prev) => (prev + 1) % testimonials.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+//   useEffect(() => {
+//     const interval = setInterval(() => {
+//       setDirection(1);
+//       setCurrent((prev) => (prev + 1) % testimonials.length);
+//     }, 5000);
+//     return () => clearInterval(interval);
+//   }, []);
 
-  const nextTestimonial = () => {
-    setDirection(1);
-    setCurrent((prev) => (prev + 1) % testimonials.length);
-  };
+//   const nextTestimonial = () => {
+//     setDirection(1);
+//     setCurrent((prev) => (prev + 1) % testimonials.length);
+//   };
 
-  const prevTestimonial = () => {
-    setDirection(-1);
-    setCurrent(
-      (prev) => (prev - 1 + testimonials.length) % testimonials.length
-    );
-  };
+//   const prevTestimonial = () => {
+//     setDirection(-1);
+//     setCurrent(
+//       (prev) => (prev - 1 + testimonials.length) % testimonials.length
+//     );
+//   };
 
-  return (
-    <section className="testimonials-section">
-      <div className="testimonials-heading-container">
-        <h2 className="section-title">
-          What Our <span className="highlight">Travelers Say</span>
-        </h2>
-      </div>
-      <div className="testimonials-container">
-        <button className="carousel-button prev" onClick={prevTestimonial}>
-          <FiChevronLeft />
-        </button>
+//   return (
+//     <section className="testimonials-section">
+//       <div className="testimonials-heading-container">
+//         <h2 className="section-title">
+//           What Our <span className="highlight">Travelers Say</span>
+//         </h2>
+//       </div>
+//       <div className="testimonials-container">
+//         <button className="carousel-button prev" onClick={prevTestimonial}>
+//           <FiChevronLeft />
+//         </button>
 
-        <div className="testimonials-track">
-          <AnimatePresence mode="wait" custom={direction}>
-            <motion.div
-              key={testimonials[current].id}
-              custom={direction}
-              initial={{ opacity: 0, x: direction > 0 ? 100 : -100 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: direction > 0 ? -100 : 100 }}
-              transition={{ duration: 0.5 }}
-              className="testimonial-card"
-            >
-              <p className="testimonial-text">
-                "{testimonials[current].content}"
-              </p>
-              <div className="testimonial-author">
-                <img
-                  src={testimonials[current].avatar}
-                  alt={testimonials[current].name}
-                  className="testimonial-avatar"
-                />
-                <div>
-                  <h4 className="author-name">{testimonials[current].name}</h4>
-                  <p className="author-role">{testimonials[current].role}</p>
-                </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
+//         <div className="testimonials-track">
+//           <AnimatePresence mode="wait" custom={direction}>
+//             <motion.div
+//               key={testimonials[current].id}
+//               custom={direction}
+//               initial={{ opacity: 0, x: direction > 0 ? 100 : -100 }}
+//               animate={{ opacity: 1, x: 0 }}
+//               exit={{ opacity: 0, x: direction > 0 ? -100 : 100 }}
+//               transition={{ duration: 0.5 }}
+//               className="testimonial-card"
+//             >
+//               <p className="testimonial-text">
+//                 "{testimonials[current].content}"
+//               </p>
+//               <div className="testimonial-author">
+//                 <img
+//                   src={testimonials[current].avatar}
+//                   alt={testimonials[current].name}
+//                   className="testimonial-avatar"
+//                 />
+//                 <div>
+//                   <h4 className="author-name">{testimonials[current].name}</h4>
+//                   <p className="author-role">{testimonials[current].role}</p>
+//                 </div>
+//               </div>
+//             </motion.div>
+//           </AnimatePresence>
+//         </div>
 
-        <button className="carousel-button next" onClick={nextTestimonial}>
-          <FiChevronRight />
-        </button>
-      </div>
+//         <button className="carousel-button next" onClick={nextTestimonial}>
+//           <FiChevronRight />
+//         </button>
+//       </div>
 
-      <div className="testimonial-indicators">
-        {testimonials.map((_, index) => (
-          <button
-            key={index}
-            className={`indicator ${index === current ? "active" : ""}`}
-            onClick={() => {
-              setDirection(index > current ? 1 : -1);
-              setCurrent(index);
-            }}
-            aria-label={`Go to testimonial ${index + 1}`}
-          />
-        ))}
-      </div>
-    </section>
-  );
-};
+//       <div className="testimonial-indicators">
+//         {testimonials.map((_, index) => (
+//           <button
+//             key={index}
+//             className={`indicator ${index === current ? "active" : ""}`}
+//             onClick={() => {
+//               setDirection(index > current ? 1 : -1);
+//               setCurrent(index);
+//             }}
+//             aria-label={`Go to testimonial ${index + 1}`}
+//           />
+//         ))}
+//       </div>
+//     </section>
+//   );
+// };
 
 // Main Landing Page Component
 const LandingPage = () => {
   const [navSolid, setNavSolid] = useState(false);
   const [carouselIndex, setCarouselIndex] = useState(0);
-
+   //const [aboutFeedback, setAboutFeedback] = useState(null);
+  const [feedbackIndex, setFeedbackIndex] = useState(0);
+  const [feedbacks, setFeedbacks] = useState([]);
   useEffect(() => {
     const carouselInterval = setInterval(() => {
       setCarouselIndex((prev) => (prev + 1) % carouselImages.length);
     }, 3000);
+
+ const savedFeedbacks = localStorage.getItem("aboutFeedbacks");
+if (savedFeedbacks) {
+  setFeedbacks(JSON.parse(savedFeedbacks));
+}
+
 
     const onScroll = () => {
       setNavSolid(window.scrollY > 50);
@@ -215,6 +224,15 @@ const LandingPage = () => {
       window.removeEventListener("scroll", onScroll);
     };
   }, []);
+
+// Move feedback carousel every 4 seconds
+  useEffect(() => {
+    if (feedbacks.length === 0) return;
+    const interval = setInterval(() => {
+      setFeedbackIndex((prev) => (prev + 1) % feedbacks.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [feedbacks]);
 
   const getVisibleImages = () => {
     const visible = [];
@@ -308,30 +326,24 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* About Section */}
-      <section
-        id="about"
-        className="about-section"
-        aria-labelledby="about-title"
-      >
+  
+       {/* About Section with Feedback Carousel */}
+      {/* <section id="about" className="about-section" aria-labelledby="about-title">
         <div className="about-container">
-          <motion.div
-            className="about-image"
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          />
-          <motion.div
-            className="about-text-container"
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 id="about-title" className="section-title">
-              Your <span className="highlight">Travel Story</span> Matters
-            </h2>
+          {feedbacks.length > 0 ? (
+            <motion.div
+              key={feedbackIndex}
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -100 }}
+              transition={{ duration: 0.5 }}
+              className="about-text-carousel"
+            >
+              <p className="about-text">
+                “{feedbacks[feedbackIndex].experience}” – <strong>{feedbacks[feedbackIndex].username}</strong>
+              </p>
+            </motion.div>
+          ) : (
             <p className="about-text">
               TripTales is more than just a travel journal - it's a platform
               that transforms your experiences into beautiful stories. Whether
@@ -339,17 +351,87 @@ const LandingPage = () => {
               make it simple to document, organize, and share your adventures
               with the world.
             </p>
-            <ul className="about-list">
-              <li>Create multimedia travel diaries</li>
-              <li>Get personalized recommendations</li>
-              <li>Connect with a global community</li>
-            </ul>
-          </motion.div>
+          )}
         </div>
-      </section>
+      </section> */}
 
-      {/* Testimonials Section */}
-      <TestimonialsCarousel />
+    <section id="about" className="about-section" aria-labelledby="about-title">
+  <div className="about-container">
+    <motion.div
+      className="feedback-carousel-track"
+      animate={{ x: ["0%", "-50%"] }}
+      transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
+    >
+      {/* Duplicate feedbacks for seamless scrolling */}
+      {feedbacks.length > 0
+        ? [...feedbacks, ...feedbacks].map((fb, i) => (
+            <div key={i} className="feedback-card">
+              <p className="feedback-text">{fb.experience}</p>
+              <strong className="feedback-user">{fb.username}</strong>
+            </div>
+          ))
+        : Array(2).fill(
+            <div className="feedback-card">
+              <p className="feedback-text">
+                TripTales is more than just a travel journal - it's a platform that transforms your experiences into beautiful stories.
+              </p>
+            </div>
+          )}
+    </motion.div>
+  </div>
+
+  {/* Internal CSS */}
+  <style>{`
+    .about-section {
+      padding: 60px 20px;
+      background-color: #fff7f0;
+    }
+    .about-container {
+      overflow: hidden;
+      width: 100%;
+    }
+    .feedback-carousel-track {
+      display: flex;
+      gap: 20px;
+      white-space: normal; /* allow wrapping */
+    }
+    .feedback-card {
+      flex: 0 0 auto;       /* prevent shrinking */
+      max-width: 320px;     /* optional max width */
+      background-color: #ff6b35;
+      color: white;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      font-style: italic;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      word-wrap: break-word; /* wrap long text */
+      white-space: normal;   /* prevent clipping */
+    }
+    .feedback-text {
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+    .feedback-user {
+      margin-top: 10px;
+      font-weight: 700;
+      color: #ffe5d0;
+      font-size: 0.95rem;
+    }
+    @media (max-width: 768px) {
+      .feedback-card {
+        min-width: 80%;
+        max-width: 80%;
+      }
+    }
+  `}</style>
+</section>
+
+
+
+
 
       {/* CTA Section */}
       <section
@@ -680,189 +762,189 @@ const LandingPage = () => {
         }
 
         /* About Section */
-        .about-section {
-          padding: 6rem 5%;
-          background-color: var(--off-white);
-        }
+//         .about-section {
+//   padding: 60px 20px;
+//   background-color: #fff7f0; /* soft theme color */
+//   text-align: center;
+// }
 
-        .about-container {
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-          gap: 3rem;
-          max-width: 1200px;
-          margin: 0 auto;
-        }
+// .about-container {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   overflow: hidden;
+//   position: relative;
+//   max-width: 900px;
+//   margin: 0 auto;
+//   height: 180px; /* adjust as needed */
+// }
 
-        .about-image {
-          flex: 1 1 400px;
-          min-height: 400px;
-          border-radius: 1rem;
-          background-image: url("https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=800&q=80");
-          background-size: cover;
-          background-position: center;
-          box-shadow: 0 10px 30px rgba(255, 87, 34, 0.2);
-        }
+// .about-text-carousel {
+//   background-color: #ff6b35; /* orange theme */
+//   color: #fff;
+//   border-radius: 20px;
+//   padding: 20px 30px;
+//   margin: 0 10px;
+//   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+//   min-width: 250px;
+//   max-width: 350px;
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: center;
+//   align-items: center;
+//   font-style: italic;
+//   font-size: 1rem;
+//   line-height: 1.4;
+// }
 
-        .about-text-container {
-          flex: 1 1 500px;
-        }
+// .about-text-carousel strong {
+//   color: #ffe5d0; /* lighter highlight for username */
+//   margin-top: 8px;
+//   display: block;
+//   font-weight: 700;
+// }
 
-        .about-text {
-          margin: 1.5rem 0;
-          color: var(--text-light);
-          font-size: 1.1rem;
-        }
+// @media (max-width: 768px) {
+//   .about-container {
+//     height: auto;
+//     flex-direction: column;
+//   }
 
-        .about-list {
-          list-style: none;
-          margin-top: 2rem;
-        }
-
-        .about-list li {
-          position: relative;
-          padding-left: 2rem;
-          margin-bottom: 1rem;
-          color: var(--text-light);
-        }
-
-        .about-list li::before {
-          content: "✓";
-          position: absolute;
-          left: 0;
-          color: var(--primary);
-          font-weight: bold;
-        }
+//   .about-text-carousel {
+//     margin: 10px 0;
+//     min-width: 80%;
+//   }
+// }
 
         /* Testimonials Section */
-        .testimonials-section {
-          padding: 6rem 5%;
-          background-color: var(--white);
-          // text-align: center;
-        }
+        // .testimonials-section {
+        //   padding: 6rem 5%;
+        //   background-color: var(--white);
+        //   // text-align: center;
+        // }
 
-        .testimonials-container {
-          position: relative;
-          max-width: 800px;
-          margin: 0 auto;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 1rem;
-        }
+        // .testimonials-container {
+        //   position: relative;
+        //   max-width: 800px;
+        //   margin: 0 auto;
+        //   display: flex;
+        //   align-items: center;
+        //   justify-content: center;
+        //   gap: 1rem;
+        // }
 
-        .testimonials-track {
-          width: 100%;
-          min-height: 300px;
-          position: relative;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
+        // .testimonials-track {
+        //   width: 100%;
+        //   min-height: 300px;
+        //   position: relative;
+        //   display: flex;
+        //   align-items: center;
+        //   justify-content: center;
+        // }
 
-        .testimonial-card {
-          width: 100%;
-          max-width: 600px;
-          background-color: var(--off-white);
-          border-radius: 1rem;
-          padding: 2.5rem;
-          box-shadow: var(--shadow);
-          margin: 0 auto;
-        }
+        // .testimonial-card {
+        //   width: 100%;
+        //   max-width: 600px;
+        //   background-color: var(--off-white);
+        //   border-radius: 1rem;
+        //   padding: 2.5rem;
+        //   box-shadow: var(--shadow);
+        //   margin: 0 auto;
+        // }
 
-        .testimonial-text {
-          font-size: 1.1rem;
-          color: var(--text-light);
-          margin-bottom: 2rem;
-          font-style: italic;
-          line-height: 1.8;
-        }
+        // .testimonial-text {
+        //   font-size: 1.1rem;
+        //   color: var(--text-light);
+        //   margin-bottom: 2rem;
+        //   font-style: italic;
+        //   line-height: 1.8;
+        // }
 
-        .testimonial-author {
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-          justify-content: center;
-        }
+        // .testimonial-author {
+        //   display: flex;
+        //   align-items: center;
+        //   gap: 1rem;
+        //   justify-content: center;
+        // }
 
-        .testimonial-avatar {
-          width: 60px;
-          height: 60px;
-          border-radius: 50%;
-          object-fit: cover;
-          border: 3px solid var(--primary-light);
-        }
+        // .testimonial-avatar {
+        //   width: 60px;
+        //   height: 60px;
+        //   border-radius: 50%;
+        //   object-fit: cover;
+        //   border: 3px solid var(--primary-light);
+        // }
 
-        .author-name {
-          font-size: 1.2rem;
-          color: var(--text-dark);
-          margin-bottom: 0.3rem;
-        }
+        // .author-name {
+        //   font-size: 1.2rem;
+        //   color: var(--text-dark);
+        //   margin-bottom: 0.3rem;
+        // }
 
-        .author-role {
-          font-size: 0.9rem;
-          color: var(--text-lighter);
-        }
+        // .author-role {
+        //   font-size: 0.9rem;
+        //   color: var(--text-lighter);
+        // }
 
-        .carousel-button {
-          background: var(--primary);
-          color: white;
-          border: none;
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          font-size: 1.2rem;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          transition: var(--transition);
-          flex-shrink: 0;
-        }
+        // .carousel-button {
+        //   background: var(--primary);
+        //   color: white;
+        //   border: none;
+        //   width: 40px;
+        //   height: 40px;
+        //   border-radius: 50%;
+        //   font-size: 1.2rem;
+        //   cursor: pointer;
+        //   display: flex;
+        //   align-items: center;
+        //   justify-content: center;
+        //   transition: var(--transition);
+        //   flex-shrink: 0;
+        // }
 
-        .carousel-button:hover {
-          background: var(--primary-dark);
-          transform: scale(1.1);
-        }
+        // .carousel-button:hover {
+        //   background: var(--primary-dark);
+        //   transform: scale(1.1);
+        // }
 
-        .testimonial-indicators {
-          display: flex;
-          justify-content: center;
-          gap: 1rem;
-          margin-top: 2rem;
-        }
+        // .testimonial-indicators {
+        //   display: flex;
+        //   justify-content: center;
+        //   gap: 1rem;
+        //   margin-top: 2rem;
+        // }
 
-        .testimonial-indicators .indicator {
-          width: 12px;
-          height: 12px;
-          border-radius: 50%;
-          background-color: var(--gray);
-          border: none;
-          cursor: pointer;
-          transition: var(--transition);
-        }
+        // .testimonial-indicators .indicator {
+        //   width: 12px;
+        //   height: 12px;
+        //   border-radius: 50%;
+        //   background-color: var(--gray);
+        //   border: none;
+        //   cursor: pointer;
+        //   transition: var(--transition);
+        // }
 
-        .testimonial-indicators .indicator.active {
-          background-color: var(--primary);
-          transform: scale(1.2);
-        }
+        // .testimonial-indicators .indicator.active {
+        //   background-color: var(--primary);
+        //   transform: scale(1.2);
+        // }
 
-        .testimonials-heading-container {
-          max-width: 1200px;
-          margin: 0 auto 3rem;
-        }
+        // .testimonials-heading-container {
+        //   max-width: 1200px;
+        //   margin: 0 auto 3rem;
+        // }
 
-        .testimonials-heading-container .section-title {
-          font-size: 2.8rem;
-          font-weight: 800;
-          position: relative;
-          display: inline-block;
-          margin: 0 auto;
-        }
+        // .testimonials-heading-container .section-title {
+        //   font-size: 2.8rem;
+        //   font-weight: 800;
+        //   position: relative;
+        //   display: inline-block;
+        //   margin: 0 auto;
+        // }
 
-        .testimonials-heading-container .section-title .highlight {
-          color: var(--primary);
-        }
+        // .testimonials-heading-container .section-title .highlight {
+        //   color: var(--primary);
+        // }
 
         /* Signup Section */
         .signup-section {

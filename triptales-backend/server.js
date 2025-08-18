@@ -11,7 +11,8 @@ import likeRoutes from './routes/likeRoutes.js';
 import bookmarksRoutes from './routes/bookmarks.js';
 import helpfulsRoutes from './routes/helpfuls.js';
 import experienceRoutes from './routes/experienceRoutes.js';
-
+import feedbackRoutes from "./routes/feedbackRoutes.js";
+import announceRoutes from "./routes/announceRoutes.js"
 const app = express();
 
 app.use(cors({
@@ -36,7 +37,11 @@ app.use('/api/likes', likeRoutes);
 app.use('/api/bookmarks', bookmarksRoutes);
 app.use('/api/helpfuls', helpfulsRoutes);
 app.use('/api/experiences', experienceRoutes);
-
+app.use("/api/feedback", feedbackRoutes);
+app.use('/api/announcements', (req, res, next) => {
+  console.log("📢 Hit /api/announcements route:", req.method, req.url);
+  next();
+}, announceRoutes);
 
 app.listen(5000, () => {
   console.log('Backend running on http://localhost:5000');

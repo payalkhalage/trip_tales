@@ -94,22 +94,16 @@ export const getAllPosts = async (req, res) => {
     res.status(500).json({ message: 'Failed to fetch posts' });
   }
 };
-
 export const getPosts = async (req, res) => {
   try {
     const [rows] = await db.query(`
       SELECT 
         p.*, 
-        GROUP_CONCAT(pi.image_url) AS images,
-        (
-          SELECT es.generated_link 
-          FROM experience_summary es 
-          WHERE es.post_id = p.id AND es.status = 'Active' 
-          ORDER BY es.created_at DESC 
-          LIMIT 1
-        ) AS generated_link
+        u.name AS user_name,           -- full name
+        GROUP_CONCAT(pi.image_url) AS images
       FROM posts p
       LEFT JOIN post_images pi ON pi.post_id = p.id
+      LEFT JOIN users u ON u.id = p.user_id   -- join with users table
       GROUP BY p.id
       ORDER BY p.id DESC
     `);
@@ -251,5 +245,4 @@ export const deletePost = async (req, res) => {
     return res.status(500).json({ message: 'Failed to delete post' });
   }
 };
-
 

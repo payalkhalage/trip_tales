@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import profileIcon from "../assets/img.jpg";
 import "./PostDashboard.css";
+import { Bell } from "lucide-react";
 
 function PostDashboard() {
   const [posts, setPosts] = useState([]);
@@ -23,7 +24,8 @@ function PostDashboard() {
   const [suggestions, setSuggestions] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState("");
   const [selectedBudget, setSelectedBudget] = useState("");
-
+  const [announcements, setAnnouncements] = useState([]);
+  const [showAnnouncements, setShowAnnouncements] = useState(false);
   const uniqueLocations = [...new Set(posts.map((p) => p.location_name))];
 
   const handleSearchChange = (value) => {
@@ -294,12 +296,109 @@ function PostDashboard() {
     setCommentsVisible((prev) => ({ ...prev, [postId]: !prev[postId] }));
   };
 
+
+
+  //  useEffect(() => {
+  //   const fetchAnnouncements = async () => {
+  //     try {
+  //       const res = await axios.get("http://localhost:5000/api/announcements", {
+  //         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  //       });
+  //       // Filter out already seen announcements
+  //       const seenIds = JSON.parse(localStorage.getItem("seenAnnouncements") || "[]");
+  //       const unseen = res.data.filter((a) => !seenIds.includes(a.id));
+  //       setAnnouncements(unseen);
+  //     } catch (err) {
+  //       console.error("Failed to fetch announcements", err);
+  //     }
+  //   };
+  //   fetchAnnouncements();
+  // }, []);
+
+
+  useEffect(() => {
+  const fetchAnnouncements = async () => {
+    if (!currentUser) return;
+    const res = await axios.get("http://localhost:5000/api/announcements", {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+    });
+    setAnnouncements(res.data);
+  };
+  fetchAnnouncements();
+}, [currentUser]);
+
+const handleDismissAnnouncement = async (id) => {
+  await axios.post("http://localhost:5000/api/announcements/seen", 
+    { announcementId: id }, 
+    { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+  );
+  setAnnouncements((prev) => prev.filter(a => a.id !== id));
+};
+
+  // const handleMarkAsSeen = () => {
+  //   const seenIds = JSON.parse(localStorage.getItem("seenAnnouncements") || "[]");
+  //   const newSeen = [...seenIds, ...announcements.map((a) => a.id)];
+  //   localStorage.setItem("seenAnnouncements", JSON.stringify(newSeen));
+  //   setAnnouncements([]); // clear from UI
+  //   setShowAnnouncements(false);
+  // };
   return (
     <div className="post-dashboard-container py-4">
       {/* Header */}
       <div className="tt-header-container">
         <h1 className="tt-logo">TripTales</h1>
         <div className="tt-header-actions">
+          {/* <div className="tt-bell-wrapper">
+            <button
+              className="tt-bell-btn"
+              onClick={() => setShowAnnouncements(!showAnnouncements)}
+            >
+              🔔
+              {announcements.length > 0 && (
+                <span className="tt-bell-badge">{announcements.length}</span>
+              )}
+            </button>
+
+            {showAnnouncements && announcements.length > 0 && (
+              <div className="tt-announcement-dropdown">
+                <h5>Announcements</h5>
+                <ul>
+                  {announcements.map((a) => (
+                    <li key={a.id}>
+                      <strong>{a.title}</strong>
+                      <p>{a.message}</p>
+                      <small>{new Date(a.date).toLocaleString()}</small>
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  className="btn btn-sm btn-primary mt-2"
+                  onClick={handleMarkAsSeen}
+                >
+                  Mark as Read
+                </button>
+              </div>
+            )}
+          </div> */}
+
+
+          <div className="announcement-bell">
+  <Bell size={24} />
+  {announcements.length > 0 && (
+    <span className="badge">{announcements.length}</span>
+  )}
+</div>
+
+{/* Announcement popup/list */}
+<div className="announcement-list">
+  {announcements.map(a => (
+    <div key={a.id} className="announcement-item">
+      <p>{a.message}</p>
+      <button onClick={() => handleDismissAnnouncement(a.id)}>Dismiss</button>
+    </div>
+  ))}
+</div>
+
           <button
             className="tt-create-trip-btn"
             onClick={() => navigate("/create-trip")}
@@ -508,16 +607,15 @@ function PostDashboard() {
                       {likes[post.id]?.liked ? "(You liked)" : ""}
                     </button>
 
-                   <button className={`btn btn-sm ${bookmarks[post.id] ? 'btn-warning' : 'btn-outline-warning'}`} onClick={() => handleToggleBookmark(post.id)}>
-                    {bookmarks[post.id] ? '🔖 Bookmarked' : '🔖 Bookmark'}
-                  </button>
+                    <button className={`btn btn-sm ${bookmarks[post.id] ? 'btn-warning' : 'btn-outline-warning'}`} onClick={() => handleToggleBookmark(post.id)}>
+                      {bookmarks[post.id] ? '🔖 Bookmarked' : '🔖 Bookmark'}
+                    </button>
 
                     <button
-                      className={`btn btn-sm ${
-                        helpfuls[post.id]?.marked
+                      className={`btn btn-sm ${helpfuls[post.id]?.marked
                           ? "btn-success"
                           : "btn-outline-success"
-                      }`}
+                        }`}
                       onClick={() => handleToggleHelpful(post.id)}
                     >
                       👍 Helpful {helpfuls[post.id]?.count || 0}
