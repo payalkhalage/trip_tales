@@ -713,7 +713,15 @@ function PostDashboard() {
                     </div>
                   )}
 
-
+                   {/* Chat with post owner */}
+                  {currentUser && currentUser.id !== post.owner_id && (
+                    <button
+                      onClick={() => navigate(`/chat/${post.id}`)}
+                      className="btn btn-primary btn-sm mt-2"
+                    >
+                      Chat with Owner
+                    </button>
+                  )}
                  
                 </div>
               </div>

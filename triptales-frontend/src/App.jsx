@@ -10,6 +10,7 @@ import Auth from './components/Auth';
 import AdminDashboard from './components/AdminDashboard';
 import AdminAnnouncements from './components/AdminAnnouncements';
 import ViewFeedbacks from './components/ViewFeedbacks';
+import ChatPage from './components/ChatPage';
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
           <Route path="/admindashboard" element={<AdminDashboard />} />
           <Route path="/admin/announcements" element={<AdminAnnouncements />} />
           <Route path="/admin/view-feedbacks" element={<ViewFeedbacks />} />
+          <Route path="/chat/:postId" element={<ChatPage />} />  
     </Routes>
     <ToastContainer position="top-right" autoClose={3000} />
     </>

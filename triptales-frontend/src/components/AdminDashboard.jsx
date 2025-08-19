@@ -210,28 +210,7 @@ function PostPopup({ post, onClose }) {
 
         <div className="popup-content">
           {hasImages && (
-            // <div className="popup-gallery-container">
-            //   <button className="popup-gallery-btn left" onClick={prev}>&lsaquo;</button>
-            //   <img
-            //     className="popup-gallery-img"
-            //     src={getImageSrc(post.images[currentIndex])}
-            //     alt={`Image ${currentIndex + 1}`}
-            //   />
-            //   <button className="popup-gallery-btn right" onClick={next}>&rsaquo;</button>
-
-            //   <div className="popup-thumbnails">
-            //     {post.images.map((img, idx) => (
-            //       <img
-            //         key={idx}
-            //         src={getImageSrc(img)}
-            //         alt={`Thumb ${idx + 1}`}
-            //         className={`popup-thumb ${currentIndex === idx ? "active-thumb" : ""}`}
-            //         onClick={() => setCurrentIndex(idx)}
-            //       />
-            //     ))}
-            //   </div>
-            // </div>
-
+        
             <div className="popup-gallery-container">
               <button className="popup-gallery-btn left" onClick={prev}>&lsaquo;</button>
               <img
