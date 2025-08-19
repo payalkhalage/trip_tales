@@ -412,39 +412,39 @@ function PostDashboard() {
           </div> */}
 
 
-         <div className="announcement-bell-wrapper">
-  <button
-    className={`announcement-bell ${announcements.length > 0 ? "new-alert" : ""}`}
-    onClick={() => setShowAnnouncements((prev) => !prev)}
-  >
-    <Bell size={24} className="bell-icon" />
-    {announcements.length > 0 && (
-      <span className="badge">{announcements.length}</span>
-    )}
-  </button>
-
-  {/* Dropdown */}
-  {announcements.length > 0 && (
-    <div className={`announcement-dropdown ${showAnnouncements ? "active" : ""}`}>
-      <div className="dropdown-arrow"></div>
-      <div className="dropdown-header">Announcements</div>
-      <ul className="dropdown-list">
-        {announcements.map((a) => (
-          <li key={a.id} className="announcement-item">
-            <p>{a.message}</p>
-            <small>{new Date(a.date).toLocaleString()}</small>
+          <div className="announcement-bell-wrapper">
             <button
-              className="dismiss-btn"
-              onClick={() => handleDismissAnnouncement(a.id)}
+              className={`announcement-bell ${announcements.length > 0 ? "new-alert" : ""}`}
+              onClick={() => setShowAnnouncements((prev) => !prev)}
             >
-              Mark as read
+              <Bell size={24} className="bell-icon" />
+              {announcements.length > 0 && (
+                <span className="badge">{announcements.length}</span>
+              )}
             </button>
-          </li>
-        ))}
-      </ul>
-    </div>
-  )}
-</div>
+
+            {/* Dropdown */}
+            {announcements.length > 0 && (
+              <div className={`announcement-dropdown ${showAnnouncements ? "active" : ""}`}>
+                <div className="dropdown-arrow"></div>
+                <div className="dropdown-header">Announcements</div>
+                <ul className="dropdown-list">
+                  {announcements.map((a) => (
+                    <li key={a.id} className="announcement-item">
+                      <p>{a.message}</p>
+                      <small>{new Date(a.date).toLocaleString()}</small>
+                      <button
+                        className="dismiss-btn"
+                        onClick={() => handleDismissAnnouncement(a.id)}
+                      >
+                        Mark as read
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
 
 
           <button
@@ -712,6 +712,9 @@ function PostDashboard() {
                       )}
                     </div>
                   )}
+
+
+                 
                 </div>
               </div>
             </div>

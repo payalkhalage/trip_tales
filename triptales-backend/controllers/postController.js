@@ -1,4 +1,3 @@
-
 import db from '../config/db.js';
 import fs from 'fs';
 import path from 'path';
@@ -94,16 +93,17 @@ export const getAllPosts = async (req, res) => {
     res.status(500).json({ message: 'Failed to fetch posts' });
   }
 };
+
 export const getPosts = async (req, res) => {
   try {
     const [rows] = await db.query(`
       SELECT 
         p.*, 
-        u.name AS user_name,           -- full name
+        u.name AS user_name,
         GROUP_CONCAT(pi.image_url) AS images
       FROM posts p
       LEFT JOIN post_images pi ON pi.post_id = p.id
-      LEFT JOIN users u ON u.id = p.user_id   -- join with users table
+      LEFT JOIN users u ON u.id = p.user_id
       GROUP BY p.id
       ORDER BY p.id DESC
     `);
@@ -200,49 +200,50 @@ export const updatePost = async (req, res) => {
   }
 };
 
+
 export const deletePost = async (req, res) => {
   const postId = req.params.id;
-  const userId = req.user?.id;
-  const role = req.user?.role;
+  const userId = req.user?.id;   // 0 = admin, >0 = user
+  const role = req.user?.role;   // "admin" or "user"
 
-  if (!userId) return res.status(401).json({ message: 'Unauthorized' });
+  if (userId == null) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
 
   const conn = await db.getConnection();
   try {
-    const [[post]] = await conn.query('SELECT user_id FROM posts WHERE id = ?', [postId]);
+    const [[post]] = await conn.query("SELECT user_id FROM posts WHERE id = ?", [postId]);
     if (!post) {
       conn.release();
-      return res.status(404).json({ message: 'Post not found' });
+      return res.status(404).json({ message: "Post not found" });
     }
 
-    if (role !== 'admin' && post.user_id !== userId) {
+    // ✅ Allow delete if Admin OR Post Owner
+    if (role !== "admin" && post.user_id !== userId) {
       conn.release();
-      return res.status(403).json({ message: 'Forbidden' });
+      return res.status(403).json({ message: "Forbidden" });
     }
 
     await conn.beginTransaction();
 
-    // ✅ Delete all dependent records first
-    await conn.query('DELETE FROM post_images WHERE post_id = ?', [postId]);
-    await conn.query('DELETE FROM comments WHERE post_id = ?', [postId]);
-    await conn.query('DELETE FROM likes WHERE post_id = ?', [postId]);
-    await conn.query('DELETE FROM bookmarks WHERE post_id = ?', [postId]);
-    await conn.query('DELETE FROM helpfuls WHERE post_id = ?', [postId]);
-    await conn.query('DELETE FROM experience_summary WHERE post_id = ?', [postId]);
-    await conn.query('DELETE FROM notifications WHERE post_id = ?', [postId]);
+    await conn.query("DELETE FROM post_images WHERE post_id = ?", [postId]);
+    await conn.query("DELETE FROM comments WHERE post_id = ?", [postId]);
+    await conn.query("DELETE FROM likes WHERE post_id = ?", [postId]);
+    await conn.query("DELETE FROM bookmarks WHERE post_id = ?", [postId]);
+    await conn.query("DELETE FROM helpfuls WHERE post_id = ?", [postId]);
+    await conn.query("DELETE FROM experience_summary WHERE post_id = ?", [postId]);
+    await conn.query("DELETE FROM notifications WHERE post_id = ?", [postId]);
 
-    // ✅ Delete the post itself
-    await conn.query('DELETE FROM posts WHERE id = ?', [postId]);
+    await conn.query("DELETE FROM posts WHERE id = ?", [postId]);
 
     await conn.commit();
     conn.release();
 
-    return res.json({ success: true, message: 'Post deleted successfully' });
+    return res.json({ success: true, message: "Post deleted successfully" });
   } catch (err) {
     await conn.rollback();
     conn.release();
-    console.error('Delete post error:', err);
-    return res.status(500).json({ message: 'Failed to delete post' });
+    console.error("Delete post error:", err);
+    return res.status(500).json({ message: "Failed to delete post" });
   }
 };
-

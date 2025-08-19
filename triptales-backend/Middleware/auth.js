@@ -11,11 +11,26 @@ export const authenticateToken = (req, res, next) => {
     return res.status(401).json({ message: 'Access denied. No token provided.' });
   }
 
-  jwt.verify(token, SECRET_KEY, (err, user) => {
-  if (err) return res.status(403).json({ message: "Invalid or expired token." });
-  req.user = user; // ✅ user will have id, username, name
-  next();
-});
+//   jwt.verify(token, SECRET_KEY, (err, user) => {
+//   if (err) return res.status(403).json({ message: "Invalid or expired token." });
+//   req.user = user; // ✅ user will have id, username, name
+//   next();
+// });
 
 
+// };
+
+jwt.verify(token, SECRET_KEY, (err, user) => {
+    if (err) {
+      console.error("JWT Error:", err.message); // Debug: Log why JWT failed
+      if (err.name === 'TokenExpiredError') {
+        return res.status(401).json({ message: 'Token expired. Please log in again.' });
+      }
+      return res.status(403).json({ message: 'Invalid token.' });
+    }
+    
+    console.log("Decoded user:", user); // Debug: Check token payload
+    req.user = user;
+    next();
+  });
 };
